@@ -16,13 +16,13 @@ public class TagService implements ITagService {
 	TagRepository tagRepository;
 
 	@Override
-	public Tag findOne(Integer id) {
-		return tagRepository.findOne(id);
+	public Tag findOne(String name) {
+		return tagRepository.findOne(name);
 	}
 
 	@Override
-	public Set<Tag> findAll() {
-		return new HashSet<>(tagRepository.findAll());
+	public Set<Tag> findAll(Integer postId) {
+		return new HashSet<>(tagRepository.findAll(postId));
 	}
 
 	@Override
@@ -31,8 +31,8 @@ public class TagService implements ITagService {
 	}
 
 	@Override
-	public void delete(Integer id) {
-		tagRepository.delete(id);
+	public void delete(Integer postId, String tagName) {
+		tagRepository.delete(postId, tagName);
 	}
 
 }

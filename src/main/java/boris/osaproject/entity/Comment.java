@@ -45,7 +45,6 @@ public class Comment implements Serializable {
 	private Integer dislikes;
 
 	{
-		author = new User();
 		post = new Post();
 		likes = 0;
 		dislikes = 0;
@@ -84,6 +83,10 @@ public class Comment implements Serializable {
 
 	public Post getPost() {
 		return post;
+	}
+	
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	public Integer getLikes() {

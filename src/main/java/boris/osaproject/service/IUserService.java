@@ -11,6 +11,8 @@ public interface IUserService {
 	User findByUsernameAndPassword(String username, String password);
 	
 	User findByEmailAndPassword(String email, String password);
+	
+	User register(User user);
 
 	Set<User> findAll();
 

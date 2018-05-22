@@ -14,12 +14,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tags")
 public class Tag implements Serializable {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "tag_id", unique = true, nullable = false)
-	private Integer id;
-
 	@Column(name = "tag_name", unique = true, nullable = false)
 	private String name;
 
@@ -27,14 +23,6 @@ public class Tag implements Serializable {
 	private Set<Post> posts;
 
 	public Tag() {
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getName() {

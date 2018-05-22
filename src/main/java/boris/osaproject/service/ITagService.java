@@ -6,11 +6,11 @@ import boris.osaproject.entity.Tag;
 
 public interface ITagService {
 
-	Tag findOne(Integer id);
+	Tag findOne(String name);
 
-	Set<Tag> findAll();
+	Set<Tag> findAll(Integer postId);
 
 	Tag save(Tag tag);
 
-	void delete(Integer id);
+	void delete(Integer postId, String tagName);
 }

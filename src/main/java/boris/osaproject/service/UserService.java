@@ -37,6 +37,13 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	public User register(User user) {
+		if (userRepository.findByEmail(user.getEmail()) != null || userRepository.findOne(user.getUsername()) != null)
+			return null;
+		return userRepository.save(user);
+	}
+
+	@Override
 	public Set<User> findAll() {
 		return new HashSet<>(userRepository.findAll());
 	}

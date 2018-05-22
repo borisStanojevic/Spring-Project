@@ -2,8 +2,6 @@ package boris.osaproject.controller;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +19,15 @@ import boris.osaproject.entity.Comment;
 import boris.osaproject.service.ICommentService;
 
 @RestController
-@RequestMapping(value = "/comments")
+@RequestMapping(value = "/posts/{postId}/comments")
 public class CommentController {
 
 	@Autowired
 	private ICommentService commentService;
 
-	@GetMapping(value="/test")
-	public ResponseEntity<String> test(HttpServletRequest request)
-	{
-		return new ResponseEntity<String>(request.getAttribute("postId").toString(), HttpStatus.FOUND);
-	}
-	
 	@GetMapping
-	public ResponseEntity<Set<CommentDTO>> getAll(HttpServletRequest request) {
-
-		Integer postId = (Integer) request.getAttribute("postId");
+	public ResponseEntity<Set<CommentDTO>> getAll(@PathVariable("postId") Integer postId) {
+		
 		Set<Comment> comments = commentService.findAll(postId);
 		Set<CommentDTO> commentsDTO = CommentDTO.convert(comments);
 
@@ -105,6 +96,5 @@ public class CommentController {
 		commentService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
 	
 }

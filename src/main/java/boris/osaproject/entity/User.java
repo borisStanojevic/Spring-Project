@@ -44,6 +44,18 @@ public class User implements Serializable {
 		if (photo == null || "".equals(photo))
 			photo = "default.png";
 	}
+	
+	public void addPost(Post post)
+	{
+		posts.add(post);
+		post.setAuthor(this);
+	}
+	
+	public void removePost(Post post)
+	{
+		post.setAuthor(null);
+		posts.remove(post);
+	}
 
 	{
 		posts = new HashSet<>();

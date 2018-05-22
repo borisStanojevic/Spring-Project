@@ -2,18 +2,33 @@ package boris.osaproject.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import boris.osaproject.entity.Post;
 
 public class PostDTO implements Serializable {
 
+	public static Set<PostDTO> convert(Set<Post> postEntitySet) {
+		Set<PostDTO> postDTOSet = new HashSet<>();
+		Iterator<Post> iterator = postEntitySet.iterator();
+		while (iterator.hasNext()) {
+			Post post = (Post) iterator.next();
+			PostDTO postDTO = new PostDTO(post);
+			postDTOSet.add(postDTO);
+		}
+		return postDTOSet;
+	}
 
 	private Integer id;
 	private String title;
 	private String content;
 	private String photo;
-	private Date date;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+	private String date;
 	private String location;
 	private Integer likes;
 	private Integer dislikes;
@@ -25,7 +40,7 @@ public class PostDTO implements Serializable {
 
 	}
 
-	private PostDTO(Integer id, String title, String content, String photo, Date date, String location, Integer likes,
+	private PostDTO(Integer id, String title, String content, String photo, String date, String location, Integer likes,
 			Integer dislikes, UserDTO author, Set<TagDTO> tags, Set<CommentDTO> comments) {
 		super();
 		this.id = id;
@@ -79,11 +94,11 @@ public class PostDTO implements Serializable {
 		this.photo = photo;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

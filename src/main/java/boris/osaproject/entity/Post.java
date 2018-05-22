@@ -1,6 +1,7 @@
 package boris.osaproject.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,12 +23,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "posts")
 public class Post implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	@Column(name = "post_id", unique = true, nullable = false)
 	private Integer id;
 
@@ -45,16 +48,17 @@ public class Post implements Serializable {
 	private String photo;
 
 	@Column(name = "post_date_posted", unique = false, nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	private String date;
 
 	@Column(name = "post_location_posted", unique = false, nullable = true)
 	private String location;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	// Automatski ce da dobavi tagove koji se odnose na ovaj post
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+	@JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "tag_name"))
 	private Set<Tag> tags;
 
+	// Nece dobaviti komentare sve dok eskplicitno to ne zatrazimo
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
 	private Set<Comment> comments;
 
@@ -70,10 +74,29 @@ public class Post implements Serializable {
 			photo = "default.png";
 	}
 
+	public void addComment(Comment comment) {
+		comments.add(comment);
+		comment.setPost(this);
+	}
+
+	public void removeComment(Comment comment) {
+		comment.setPost(null);
+		comments.remove(comment);
+	}
+
+	public void addTag(Tag tag) {
+		tags.add(tag);
+		tag.getPosts().add(this);
+	}
+
+	public void removeTag(Tag tag) {
+		tags.remove(tag);
+		tag.getPosts().remove(this);
+	}
+
 	{
 		likes = 0;
 		dislikes = 0;
-		author = new User();
 		tags = new HashSet<>();
 		comments = new HashSet<>();
 	}
@@ -109,6 +132,10 @@ public class Post implements Serializable {
 		return author;
 	}
 
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
 	public String getPhoto() {
 		return photo;
 	}
@@ -117,11 +144,11 @@ public class Post implements Serializable {
 		this.photo = photo;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

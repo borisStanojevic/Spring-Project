@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 import boris.osaproject.service.ITagService;
 
 @RestController
-@RequestMapping(value = "/api/tags")
+@RequestMapping(value = "/posts/{postId}/tags")
 public class TagController {
 
 	@Autowired
 	private ITagService tagService;
+	
 
 }
