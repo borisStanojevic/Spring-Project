@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Post implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id", unique = true, nullable = false)
 	private Integer id;
 
@@ -50,8 +50,11 @@ public class Post implements Serializable {
 	@Column(name = "post_date_posted", unique = false, nullable = false)
 	private String date;
 
-	@Column(name = "post_location_posted", unique = false, nullable = true)
-	private String location;
+	@Column(name = "post_location_latitude", unique = false, nullable = true)
+	private Double locationLatitude;
+
+	@Column(name = "post_location_longitude", unique = false, nullable = true)
+	private Double locationLongitude;
 
 	// Automatski ce da dobavi tagove koji se odnose na ovaj post
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
@@ -144,20 +147,36 @@ public class Post implements Serializable {
 		this.photo = photo;
 	}
 
+	public Double getLocationLatitude() {
+		return locationLatitude;
+	}
+
+	public void setLocationLatitude(Double locationLatitude) {
+		this.locationLatitude = locationLatitude;
+	}
+
+	public Double getLocationLongitude() {
+		return locationLongitude;
+	}
+
+	public void setLocationLongitude(Double locationLongitude) {
+		this.locationLongitude = locationLongitude;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
 	public String getDate() {
 		return date;
 	}
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public Set<Comment> getComments() {
@@ -212,7 +231,7 @@ public class Post implements Serializable {
 	@Override
 	public String toString() {
 		return String.format("Post [id=%s, title=%s, content=%s, date=%s, location=%s, likes=%s, dislikes=%s]", id,
-				title, content, date, location, likes, dislikes);
+				title, content, date, locationLatitude + "|" + locationLongitude, likes, dislikes);
 	}
 
 }

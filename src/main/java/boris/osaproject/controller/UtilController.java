@@ -62,7 +62,8 @@ public class UtilController {
 			}
 		}
 		post.setContent(postDTO.getContent());
-		post.setLocation(postDTO.getLocation());
+		post.setLocationLatitude(postDTO.getLocationLatitude());
+		post.setLocationLongitude(postDTO.getLocationLongitude());
 		post.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
 		for (TagDTO tagDTO : postDTO.getTags()) {
 			Tag tag = new Tag();

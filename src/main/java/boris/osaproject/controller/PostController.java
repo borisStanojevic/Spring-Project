@@ -54,7 +54,8 @@ public class PostController {
 		post.setTitle(postDTO.getTitle());
 		post.setContent(postDTO.getContent());
 		//post.setDate(postDTO.getDate());
-		post.setLocation(postDTO.getLocation());
+		post.setLocationLatitude(postDTO.getLocationLatitude());
+		post.setLocationLongitude(postDTO.getLocationLongitude());
 		post.setPhoto(postDTO.getPhoto());
 		//Tagovi !
 		

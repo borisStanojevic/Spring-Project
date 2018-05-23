@@ -29,7 +29,8 @@ public class PostDTO implements Serializable {
 	private String photo;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
 	private String date;
-	private String location;
+	private Double locationLatitude;
+	private Double locationLongitude;
 	private Integer likes;
 	private Integer dislikes;
 	private UserDTO author;
@@ -40,15 +41,17 @@ public class PostDTO implements Serializable {
 
 	}
 
-	private PostDTO(Integer id, String title, String content, String photo, String date, String location, Integer likes,
-			Integer dislikes, UserDTO author, Set<TagDTO> tags, Set<CommentDTO> comments) {
+	private PostDTO(Integer id, String title, String content, String photo, String date, Double locationLatitude,
+			Double locationLongitude, Integer likes, Integer dislikes, UserDTO author, Set<TagDTO> tags,
+			Set<CommentDTO> comments) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.photo = photo;
 		this.date = date;
-		this.location = location;
+		this.locationLatitude = locationLatitude;
+		this.locationLongitude = locationLongitude;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.author = author;
@@ -57,9 +60,9 @@ public class PostDTO implements Serializable {
 	}
 
 	public PostDTO(Post p) {
-		this(p.getId(), p.getTitle(), p.getContent(), p.getPhoto(), p.getDate(), p.getLocation(), p.getLikes(),
-				p.getDislikes(), new UserDTO(p.getAuthor()), TagDTO.convert(p.getTags()),
-				CommentDTO.convert(p.getComments()));
+		this(p.getId(), p.getTitle(), p.getContent(), p.getPhoto(), p.getDate(), p.getLocationLatitude(),
+				p.getLocationLongitude(), p.getLikes(), p.getDislikes(), new UserDTO(p.getAuthor()),
+				TagDTO.convert(p.getTags()), CommentDTO.convert(p.getComments()));
 	}
 
 	public Integer getId() {
@@ -102,12 +105,20 @@ public class PostDTO implements Serializable {
 		this.date = date;
 	}
 
-	public String getLocation() {
-		return location;
+	public Double getLocationLatitude() {
+		return locationLatitude;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setLocationLatitude(Double locationLatitude) {
+		this.locationLatitude = locationLatitude;
+	}
+
+	public Double getLocationLongitude() {
+		return locationLongitude;
+	}
+
+	public void setLocationLongitude(Double locationLongitude) {
+		this.locationLongitude = locationLongitude;
 	}
 
 	public Integer getLikes() {
