@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class Util {
 	public static Integer postCounter = 0;
+	public static Integer commentCounter = 0;
 	public static Set<Post> posts = new HashSet<>();
 	public static Set<User> users = new HashSet<>();
 	
@@ -36,6 +37,13 @@ public class Util {
 			p.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
 			p.setTitle("Naslov objave broj " + i);
 			p.setAuthor(u);
+			Comment c = new Comment();
+			c.setId(++commentCounter);
+			c.setContent("Komentar " + i);
+			c.setAuthor(u2);
+			c.setPost(p);
+			c.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
+			p.getComments().add(c);
 			Tag t = new Tag();
 			t.setName("Tag " + i);
 			p.getTags().add(t);
@@ -51,6 +59,13 @@ public class Util {
 			p.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));;
 			p.setTitle("Naslov objave broj " + i);
 			p.setAuthor(u2);
+			Comment c = new Comment();
+			c.setId(++commentCounter);
+			c.setContent("Komentar " + i);
+			c.setAuthor(u);
+			c.setPost(p);
+			c.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
+			p.getComments().add(c);
 			Tag t = new Tag();
 			t.setName("Tag " + i);
 			p.getTags().add(t);

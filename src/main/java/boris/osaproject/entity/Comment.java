@@ -30,9 +30,8 @@ public class Comment implements Serializable {
 	@JoinColumn(name = "comment_author_username", referencedColumnName = "user_username", nullable = false)
 	private User author;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "comment_date_posted", unique = false, nullable = false)
-	private Date date;
+	private String date;
 
 	@ManyToOne
 	@JoinColumn(name = "comment_post_id", referencedColumnName = "post_id", nullable = false)
@@ -73,11 +72,11 @@ public class Comment implements Serializable {
 		return author;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -91,6 +90,11 @@ public class Comment implements Serializable {
 
 	public Integer getLikes() {
 		return likes;
+	}
+	
+
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	public void setLikes(Integer likes) {

@@ -24,7 +24,7 @@ public class CommentDTO implements Serializable {
 	private Integer id;
 	private String content;
 	private UserDTO author;
-	private Date date;
+	private String date;
 	private Integer likes;
 	private Integer dislikes;
 
@@ -32,7 +32,7 @@ public class CommentDTO implements Serializable {
 
 	}
 
-	private CommentDTO(Integer id, String content, UserDTO author, Date date, Integer likes, Integer dislikes) {
+	private CommentDTO(Integer id, String content, UserDTO author, String date, Integer likes, Integer dislikes) {
 		this.id = id;
 		this.content = content;
 		this.author = author;
@@ -69,11 +69,11 @@ public class CommentDTO implements Serializable {
 		this.author = author;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
