@@ -1,8 +1,6 @@
 package boris.osaproject.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,10 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "posts")
@@ -74,7 +68,7 @@ public class Post implements Serializable {
 	@PrePersist
 	void preInsert() {
 		if (photo == null || "".equals(photo))
-			photo = "default.png";
+			photo = "default_post_photo.png";
 	}
 
 	public void addComment(Comment comment) {

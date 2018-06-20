@@ -1,5 +1,6 @@
 package boris.osaproject.controller;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import boris.osaproject.dto.PostDTO;
+import boris.osaproject.dto.TagDTO;
 import boris.osaproject.entity.Post;
+import boris.osaproject.entity.Tag;
 import boris.osaproject.service.IPostService;
 import boris.osaproject.service.ITagService;
 
@@ -71,12 +74,20 @@ public class PostController {
 		Post post = postService.findOne(postDTO.getId());
 		if(post == null)
 			return new ResponseEntity<PostDTO>(HttpStatus.BAD_REQUEST);
+		
 		Post updatedPost = new Post();
-		updatedPost.setId(postDTO.getId());
+		updatedPost.setId(post.getId());
+		updatedPost.setAuthor(post.getAuthor());
 		updatedPost.setTitle(postDTO.getTitle());
 		updatedPost.setContent(postDTO.getContent());
 		updatedPost.setPhoto(postDTO.getPhoto());
-		
+		updatedPost.setDate(postDTO.getDate());
+		updatedPost.setLikes(postDTO.getLikes());
+		updatedPost.setDislikes(postDTO.getDislikes());
+		updatedPost.setLocationLatitude(postDTO.getLocationLatitude());
+		updatedPost.setLocationLongitude(postDTO.getLocationLongitude());
+		updatedPost.setTags(post.getTags());
+
 		post = postService.save(updatedPost);
 		postDTO = new PostDTO(post);
 		
@@ -106,5 +117,4 @@ public class PostController {
 		postService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
 }

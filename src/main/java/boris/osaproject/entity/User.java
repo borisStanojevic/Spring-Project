@@ -42,7 +42,7 @@ public class User implements Serializable {
 	@PrePersist
 	void preInsert() {
 		if (photo == null || "".equals(photo))
-			photo = "default.png";
+			photo = "default_user_photo.png";
 	}
 	
 	public void addPost(Post post)
