@@ -1,6 +1,7 @@
 package boris.osaproject.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ public class Tag implements Serializable {
 	private String name;
 
 	@ManyToMany(mappedBy = "tags")
-	private Set<Post> posts;
+	private Set<Post> posts = new HashSet<>();
 
 	public Tag() {
 	}

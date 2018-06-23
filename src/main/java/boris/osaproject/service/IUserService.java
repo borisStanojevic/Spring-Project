@@ -12,7 +12,7 @@ public interface IUserService {
 	
 	User findByEmailAndPassword(String email, String password);
 	
-	User register(User user);
+	User add(User user);
 
 	Set<User> findAll();
 

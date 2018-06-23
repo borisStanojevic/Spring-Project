@@ -37,7 +37,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User register(User user) {
+	public User add(User user) {
 		if (userRepository.findByEmail(user.getEmail()) != null || userRepository.findOne(user.getUsername()) != null)
 			return null;
 		return userRepository.save(user);

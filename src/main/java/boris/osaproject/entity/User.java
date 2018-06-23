@@ -43,6 +43,8 @@ public class User implements Serializable {
 	void preInsert() {
 		if (photo == null || "".equals(photo))
 			photo = "default_user_photo.png";
+		if(fullName == null || "".equals(fullName))
+			fullName = "";
 	}
 	
 	public void addPost(Post post)

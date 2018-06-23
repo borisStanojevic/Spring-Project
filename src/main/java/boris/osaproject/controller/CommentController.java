@@ -1,6 +1,10 @@
 package boris.osaproject.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import boris.osaproject.dto.CommentDTO;
 import boris.osaproject.entity.Comment;
+import boris.osaproject.entity.Post;
+import boris.osaproject.entity.User;
 import boris.osaproject.service.ICommentService;
+import boris.osaproject.service.IPostService;
+import boris.osaproject.service.IUserService;
 
 @RestController
 @RequestMapping(value = "/posts/{postId}/comments")
@@ -24,6 +32,12 @@ public class CommentController {
 
 	@Autowired
 	private ICommentService commentService;
+	
+	@Autowired
+	private IPostService postService;
+	
+	@Autowired
+	private IUserService userService;
 
 	@GetMapping
 	public ResponseEntity<Set<CommentDTO>> getAll(@PathVariable("postId") Integer postId) {
@@ -47,16 +61,16 @@ public class CommentController {
 	}
 	
 	@PostMapping(consumes="application/json")
-	public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO commentDTO)
+	public ResponseEntity<CommentDTO> create(@PathVariable("postId") Integer postId, @RequestBody CommentDTO commentDTO)
 	{
 		Comment comment = new Comment();
 		comment.setContent(commentDTO.getContent());
-		comment.setDate(commentDTO.getDate());
+		comment.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
 		//Lajkovi i dislajkovi ce inicijalno bit nula posto ih ne postavljam
-		comment.getAuthor().setUsername(commentDTO.getAuthor().getUsername());
-		comment.getAuthor().setPassword(commentDTO.getAuthor().getPassword());
-		comment.getAuthor().setEmail(commentDTO.getAuthor().getEmail());
-		comment.getAuthor().setFullName(commentDTO.getAuthor().getFullName());
+		User author = userService.findOne(commentDTO.getAuthor().getUsername());
+		comment.setAuthor(author);
+		Post post = postService.findOne(postId);
+		comment.setPost(post);
 		
 		comment = commentService.save(comment);
 		commentDTO = new CommentDTO(comment);
@@ -87,8 +101,8 @@ public class CommentController {
 		return new ResponseEntity<CommentDTO>(commentDTO, HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") Integer id)
+	@DeleteMapping(value="/{commentId}")
+	public ResponseEntity<Void> delete(@PathVariable("commentId") Integer id)
 	{
 		Comment comment = commentService.findOne(id);
 		if (comment == null)
