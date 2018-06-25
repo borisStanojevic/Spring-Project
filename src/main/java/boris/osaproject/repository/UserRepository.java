@@ -7,4 +7,5 @@ import boris.osaproject.entity.User;
 public interface UserRepository extends JpaRepository<User, String> {
 
 	User findByEmail(String email);
+	
 }

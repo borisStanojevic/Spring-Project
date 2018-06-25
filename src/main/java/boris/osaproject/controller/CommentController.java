@@ -67,7 +67,7 @@ public class CommentController {
 		comment.setContent(commentDTO.getContent());
 		comment.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
 		//Lajkovi i dislajkovi ce inicijalno bit nula posto ih ne postavljam
-		User author = userService.findOne(commentDTO.getAuthor().getUsername());
+		User author = userService.findByUsername(commentDTO.getAuthor().getUsername());
 		comment.setAuthor(author);
 		Post post = postService.findOne(postId);
 		comment.setPost(post);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,7 @@ import boris.osaproject.entity.User;
 import boris.osaproject.service.IPostService;
 import boris.osaproject.service.ITagService;
 import boris.osaproject.service.IUserService;
+import boris.osaproject.util.TokenHelper;
 
 @RestController
 @RequestMapping(value = "/posts")
@@ -67,7 +69,7 @@ public class PostController {
 	public ResponseEntity<PostDTO> create(@RequestBody PostDTO postDTO)
 	{
 		Post post = new Post();
-		User author = userService.findOne(postDTO.getAuthor().getUsername());
+		User author = userService.findByUsername(postDTO.getAuthor().getUsername());
 		post.setAuthor(author);
 		post.setTitle(postDTO.getTitle());
 		post.setContent(postDTO.getContent());
@@ -130,6 +132,7 @@ public class PostController {
 		Post post = postService.findOne(postDTO.getId());
 		if(post == null)
 			return new ResponseEntity<PostDTO>(HttpStatus.BAD_REQUEST);
+		
 		post = postService.save(post);
 		
 		Post updatedPost = new Post();

@@ -16,7 +16,7 @@ public class UserService implements IUserService {
 	UserRepository userRepository;
 
 	@Override
-	public User findOne(String username) {
+	public User findByUsername(String username) {
 		return userRepository.findOne(username);
 	}
 

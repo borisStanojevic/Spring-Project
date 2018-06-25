@@ -1,6 +1,7 @@
 package boris.osaproject.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,15 +9,23 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
-
+public class User implements Serializable, UserDetails{
+	
 	@Id
 	@Column(name = "user_username", unique = true, nullable = false)
 	private String username;
@@ -24,7 +33,7 @@ public class User implements Serializable {
 	@Column(name = "user_password", unique = false, nullable = false)
 	private String password;
 
-	@Column(name = "user_email", unique = true, nullable = false)
+	@Column(name = "user_email", unique = false, nullable = false)
 	private String email;
 
 	@Column(name = "user_full_name", unique = false, nullable = false)
@@ -38,6 +47,10 @@ public class User implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
 	private Set<Comment> comments;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE } , fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_username"), inverseJoinColumns = @JoinColumn(name = "role_role"))
+	private Set<Role> roles;
 
 	@PrePersist
 	void preInsert() {
@@ -45,6 +58,18 @@ public class User implements Serializable {
 			photo = "default_user_photo.png";
 		if(fullName == null || "".equals(fullName))
 			fullName = "";
+		}
+	
+	public void addRole(Role role)
+	{
+		roles.add(role);
+		role.getUsers().add(this);
+	}
+	
+	public void removeRole(Role role)
+	{
+		roles.remove(role);
+		role.getUsers().remove(this);
 	}
 	
 	public void addPost(Post post)
@@ -62,6 +87,7 @@ public class User implements Serializable {
 	{
 		posts = new HashSet<>();
 		comments = new HashSet<>();
+		roles = new HashSet<>();
 	}
 
 	public User() {
@@ -114,6 +140,10 @@ public class User implements Serializable {
 	public Set<Comment> getComments() {
 		return comments;
 	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -141,5 +171,36 @@ public class User implements Serializable {
 	public String toString() {
 		return String.format("User [username=%s, email=%s]", username, email);
 	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return roles;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 
 }
